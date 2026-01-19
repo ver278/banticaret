@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BAN İç ve Dış Ticaret Ltd.Şti - Real Estate</title>
+    <title>BAN - Real Estate</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 font-weight=%22bold%22 fill=%22%232c3e50%22>B</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 font-weight=%22bold%22 fill=%22%232c3e50%22>B</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@400;500;600;700;800;900&display=swap" 
+rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -401,9 +404,7 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            transform: scaleX(1.25);
-            transform-origin: center;
-            line-height: 0.85;
+            line-height: 1;
             height: 45px;
         }
         
@@ -424,11 +425,10 @@
         
         .footer-logo-letter-a {
             font-family: 'Encode Sans Expanded', 'Montserrat', sans-serif;
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: white;
             display: inline-block;
-            margin: 0 1px;
             letter-spacing: 0;
             position: relative;
             z-index: 2;
@@ -437,7 +437,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transform: translateY(-1px);
+        }
+        
+        .instagram-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+        
+        .instagram-link:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .copyright {
@@ -485,20 +500,14 @@
             }
             
             .footer-logo {
-                font-size: 2rem;
-                letter-spacing: -0.3px;
-                transform: scaleX(1.15);
-                height: 35px;
+                font-size: 2.2rem;
+                height: 40px;
             }
             
-            .footer-logo-letter {
-                font-size: 2rem;
-            }
-            
+            .footer-logo-letter,
             .footer-logo-letter-a {
-                font-size: 2.1rem;
-                margin: 0 0px;
-                transform: translateY(0);
+                font-size: 2.2rem;
+                transform: none !important;
             }
             
             .contact-buttons {
@@ -509,6 +518,13 @@
             .contact-buttons .btn {
                 width: 100%;
                 margin: 5px 0;
+            }
+            
+            .instagram-link {
+                justify-content: center;
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
             }
         }
         
@@ -532,13 +548,13 @@
             }
             
             .footer-logo {
-                font-size: 1.7rem;
-                transform: scaleX(1.1);
-                height: 30px;
+                font-size: 1.9rem;
+                height: 35px;
             }
             
+            .footer-logo-letter,
             .footer-logo-letter-a {
-                font-size: 1.8rem;
+                font-size: 1.9rem;
             }
         }
     </style>
@@ -804,8 +820,8 @@
                     <p><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>İzmir Çeşme Marina</p>
                     <p><i class="fas fa-map-pin" style="margin-right: 8px;"></i>Alsancak, İzmir, Türkiye</p>
                     <p>
-                        <a href="https://www.instagram.com/banticaret/" target="_blank" style="color: white; text-decoration: none;">
-                            <i class="fab fa-instagram" style="margin-right: 8px;"></i>@banticaret
+                        <a href="https://www.instagram.com/banticaret/" target="_blank" class="instagram-link">
+                            <i class="fab fa-instagram"></i>@banticaret
                         </a>
                     </p>
                 </div>
