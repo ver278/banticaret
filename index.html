@@ -8,8 +8,7 @@
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 font-weight=%22bold%22 fill=%22%232c3e50%22>B</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@400;500;600;700;800;900&display=swap" 
-rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -426,7 +425,7 @@ rel="stylesheet">
         .footer-logo-letter-a {
             font-family: 'Encode Sans Expanded', 'Montserrat', sans-serif;
             font-size: 2.5rem;
-            font-weight: 800;
+            font-weight: 900;
             color: white;
             display: inline-block;
             letter-spacing: 0;
@@ -439,20 +438,38 @@ rel="stylesheet">
             justify-content: center;
         }
         
-        .instagram-link {
-            display: inline-flex;
-            align-items: center;
+        .footer-contact-info {
+            display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 8px;
+            align-items: center;
+            gap: 25px;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .footer-contact-info p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+        
+        .footer-contact-info i {
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+        
+        .footer-contact-info a {
             color: white;
             text-decoration: none;
             transition: var(--transition);
-            padding: 8px 16px;
-            border-radius: 4px;
+            display: flex;
+            align-items: center;
         }
         
-        .instagram-link:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .footer-contact-info a:hover {
+            opacity: 0.8;
         }
         
         .copyright {
@@ -472,6 +489,7 @@ rel="stylesheet">
             
             .logo-letter-a {
                 font-size: 3.4rem;
+                font-weight: 900;
                 margin: 0 0px;
                 transform: translateY(-1px);
             }
@@ -507,7 +525,10 @@ rel="stylesheet">
             .footer-logo-letter,
             .footer-logo-letter-a {
                 font-size: 2.2rem;
-                transform: none !important;
+            }
+            
+            .footer-logo-letter-a {
+                font-weight: 900;
             }
             
             .contact-buttons {
@@ -520,11 +541,15 @@ rel="stylesheet">
                 margin: 5px 0;
             }
             
-            .instagram-link {
+            .footer-contact-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-contact-info p {
+                white-space: normal;
+                text-align: center;
                 justify-content: center;
-                width: 100%;
-                max-width: 200px;
-                margin: 0 auto;
             }
         }
         
@@ -545,6 +570,7 @@ rel="stylesheet">
             
             .logo-letter-a {
                 font-size: 2.7rem;
+                font-weight: 900;
             }
             
             .footer-logo {
@@ -555,6 +581,10 @@ rel="stylesheet">
             .footer-logo-letter,
             .footer-logo-letter-a {
                 font-size: 1.9rem;
+            }
+            
+            .footer-logo-letter-a {
+                font-weight: 900;
             }
         }
     </style>
@@ -814,13 +844,13 @@ rel="stylesheet">
                         <span class="company-line">Construction, Improvement and Development</span>
                     </div>
                 </div>
-                <div class="contact-info" style="align-items: center; gap: 15px;">
-                    <p><i class="fas fa-phone-alt" style="margin-right: 8px;"></i>0 532 495 98 98</p>
-                    <p><i class="fas fa-envelope" style="margin-right: 8px;"></i>ticaretban@gmail.com</p>
-                    <p><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>İzmir Çeşme Marina</p>
-                    <p><i class="fas fa-map-pin" style="margin-right: 8px;"></i>Alsancak, İzmir, Türkiye</p>
+                <div class="footer-contact-info">
+                    <p><i class="fas fa-phone-alt"></i>0 532 495 98 98</p>
+                    <p><i class="fas fa-envelope"></i>ticaretban@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i>İzmir Çeşme Marina</p>
+                    <p><i class="fas fa-map-pin"></i>Alsancak, İzmir, Türkiye</p>
                     <p>
-                        <a href="https://www.instagram.com/banticaret/" target="_blank" class="instagram-link">
+                        <a href="https://www.instagram.com/banticaret/" target="_blank">
                             <i class="fab fa-instagram"></i>@banticaret
                         </a>
                     </p>
