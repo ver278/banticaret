@@ -199,7 +199,7 @@
             font-size: 1.1rem;
             color: var(--accent-color);
             font-weight: 500;
-            margin-top: 5px;
+            margin-top: 10px; /* Increased from 5px to create more space */
             width: 100%;
             max-width: 600px;
             line-height: 1.4;
@@ -568,6 +568,11 @@
                 transform: translateY(-2px);
             }
             
+            /* Move the company name down more on mobile */
+            .company-name {
+                margin-top: 15px; /* Increased from 10px for mobile */
+            }
+            
             .hero h1 {
                 font-size: 2.2rem;
             }
@@ -586,9 +591,15 @@
                 padding: 60px 0;
             }
             
+            /* Move language button down on mobile to avoid overlap */
             .language-switch {
-                top: 10px;
-                right: 10px;
+                top: 25px; /* Increased from 10px to 25px */
+                right: 15px;
+            }
+            
+            /* Add more padding to header to accommodate language button */
+            header {
+                padding-top: 30px; /* Increased from 20px to create more space */
             }
             
             .footer-logo {
@@ -656,6 +667,13 @@
             .footer-logo-letter-a {
                 filter: none;
             }
+            
+            /* Make copyright text break into two lines on mobile */
+            .copyright p {
+                display: flex;
+                flex-direction: column;
+                line-height: 1.6;
+            }
         }
         
         @media (max-width: 480px) {
@@ -689,6 +707,22 @@
                 margin: 0 2px;
                 /* REMOVED the filter that was making it thicker */
                 filter: none;
+            }
+            
+            /* Move the company name down more on very small screens */
+            .company-name {
+                margin-top: 20px; /* Increased from 15px for very small screens */
+            }
+            
+            /* Move language button down more on very small screens */
+            .language-switch {
+                top: 20px; /* Increased from 10px to 20px */
+                right: 10px;
+            }
+            
+            /* Add more padding to header on very small screens */
+            header {
+                padding-top: 35px; /* Increased from 20px to create more space */
             }
             
             .footer-logo {
@@ -925,7 +959,7 @@
                             </div>
                         </div>
                         
-                        <div class="contact-item {
+                        <div class="contact-item">
                             <div class="contact-icon">
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
@@ -1006,7 +1040,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2026 - BAN İç ve Dış Ticaret Ltd. Şti. Tüm hakları saklıdır.</p>
+                <p><span class="copyright-line-1">&copy; 2026 - BAN İç ve Dış Ticaret Ltd. Şti.</span> <span class="copyright-line-2">Tüm hakları saklıdır.</span></p>
             </div>
         </div>
     </footer>
