@@ -8,6 +8,8 @@
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 font-weight=%22bold%22 fill=%22%232c3e50%22>B</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Syne font for all logo letters -->
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -104,9 +106,9 @@
         }
         
         .logo {
-            font-family: 'Encode Sans Expanded', 'Montserrat', sans-serif;
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
             font-size: 4rem;
-            font-weight: 900;
+            font-weight: 650; /* Slightly thicker but not too thick */
             color: var(--primary-color);
             letter-spacing: -1px;
             display: flex;
@@ -124,7 +126,7 @@
         .logo-letter {
             display: inline-block;
             text-align: center;
-            font-weight: 900;
+            font-weight: 650; /* Slightly thicker but not too thick */
             position: relative;
             z-index: 2;
             flex: 0 0 auto;
@@ -132,13 +134,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
         }
         
-        .logo-letter-a {
-            font-family: 'Encode Sans Expanded', 'Montserrat', sans-serif;
-            font-size: 4.2rem;
-            font-weight: 900;
-            color: var(--accent-color);
+        /* Syne font for B - adjusted to match vertical height */
+        .logo-letter-b {
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
+            font-size: 4.4rem; /* Adjusted for better vertical match */
+            font-weight: 650; /* Slightly thicker but not too thick */
+            color: var(--primary-color);
             display: inline-block;
             margin: 0 1px;
             letter-spacing: 0;
@@ -149,9 +153,46 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transform: translateY(-2px);
-            /* Better centering for Λ */
+            /* Adjust B to be visually aligned with other characters */
+            transform: translateY(-2px); /* Adjusted to match Λ's positioning */
+        }
+        
+        /* Syne font for N - INCREASED to match vertical height */
+        .logo-letter-n {
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
+            font-size: 4.25rem; /* INCREASED to match vertical height with B and Λ */
+            font-weight: 650; /* Slightly thicker but not too thick */
+            color: var(--primary-color);
+            display: inline-block;
+            margin: 0 1px;
+            letter-spacing: 0;
+            position: relative;
+            z-index: 2;
+            flex: 0 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(0); /* Reset to align properly */
+        }
+        
+        /* Syne font for Λ (Lambda) */
+        .logo-letter-a {
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
+            font-size: 4.2rem; /* Original size */
+            font-weight: 650; /* Slightly thicker but not too thick */
+            color: var(--accent-color);
+            display: inline-block;
             margin: 0 3px;
+            letter-spacing: 0;
+            position: relative;
+            z-index: 2;
+            flex: 0 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-2px); /* Original adjustment */
         }
         
         .company-name {
@@ -396,9 +437,9 @@
         }
         
         .footer-logo {
-            font-family: 'Encode Sans Expanded', 'Montserrat', sans-serif;
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
             font-size: 2.5rem;
-            font-weight: 900;
+            font-weight: 650; /* Slightly thicker but not too thick */
             color: white;
             letter-spacing: -0.5px;
             display: flex;
@@ -409,10 +450,11 @@
             height: 45px;
         }
         
-        .footer-logo-letter {
-            display: inline-block;
-            font-size: 2.5rem;
-            font-weight: 900;
+        /* Syne font for footer B */
+        .footer-logo-letter-b {
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
+            font-size: 2.65rem; /* Adjusted for better vertical match */
+            font-weight: 650; /* Slightly thicker but not too thick */
             color: white;
             text-align: center;
             position: relative;
@@ -424,10 +466,27 @@
             justify-content: center;
         }
         
+        /* Syne font for footer N - INCREASED to match vertical height */
+        .footer-logo-letter-n {
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
+            font-size: 2.6rem; /* INCREASED to match vertical height with B and Λ */
+            font-weight: 650; /* Slightly thicker but not too thick */
+            color: white;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 0 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Syne font for footer Λ - REMOVED the filter that makes it thicker */
         .footer-logo-letter-a {
-            font-family: 'Encode Sans Expanded', 'Montserrat', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 900;
+            font-family: 'Syne', 'Encode Sans Expanded', 'Montserrat', sans-serif;
+            font-size: 2.5rem; /* Original size */
+            font-weight: 650; /* Slightly thicker but not too thick */
             color: white;
             display: inline-block;
             letter-spacing: 0;
@@ -438,7 +497,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Better centering for footer Λ */
             margin: 0 2px;
         }
         
@@ -493,16 +551,21 @@
                 height: 60px;
             }
             
-            .logo-letter {
-                font-size: 3.2rem;
-                font-weight: 900;
+            .logo-letter-b {
+                font-size: 3.55rem; /* Proportionally adjusted for mobile */
+                transform: translateY(-2px);
+            }
+            
+            .logo-letter-n {
+                font-size: 3.45rem; /* Proportionally INCREASED for mobile */
+                transform: translateY(0);
             }
             
             .logo-letter-a {
                 font-size: 3.4rem;
-                font-weight: 900;
+                font-weight: 650; /* Slightly thicker but not too thick */
                 margin: 0 2px;
-                transform: translateY(-1px);
+                transform: translateY(-2px);
             }
             
             .hero h1 {
@@ -533,15 +596,20 @@
                 height: 40px;
             }
             
-            .footer-logo-letter {
-                font-size: 2.2rem;
-                font-weight: 900;
+            .footer-logo-letter-b {
+                font-size: 2.35rem; /* Proportionally adjusted for mobile */
+            }
+            
+            .footer-logo-letter-n {
+                font-size: 2.3rem; /* Proportionally INCREASED for mobile */
             }
             
             .footer-logo-letter-a {
                 font-size: 2.2rem;
-                font-weight: 900;
+                font-weight: 650; /* Slightly thicker but not too thick */
                 margin: 0 2px;
+                /* REMOVED the filter that was making it thicker */
+                filter: none;
             }
             
             .contact-buttons {
@@ -580,21 +648,13 @@
                 text-align: left;
             }
             
-            /* REQUIRED: Make Lambda symbol thicker on mobile using filter */
+            /* REMOVED the filter that makes Lambda symbol thicker on mobile */
             .logo-letter-a {
-                filter: 
-                    drop-shadow(0.3px 0.3px 0 currentColor)
-                    drop-shadow(-0.3px -0.3px 0 currentColor)
-                    drop-shadow(0.3px -0.3px 0 currentColor)
-                    drop-shadow(-0.3px 0.3px 0 currentColor);
+                filter: none;
             }
             
             .footer-logo-letter-a {
-                filter: 
-                    drop-shadow(0.25px 0.25px 0 white)
-                    drop-shadow(-0.25px -0.25px 0 white)
-                    drop-shadow(0.25px -0.25px 0 white)
-                    drop-shadow(-0.25px 0.25px 0 white);
+                filter: none;
             }
         }
         
@@ -613,15 +673,22 @@
                 height: 50px;
             }
             
-            .logo-letter {
-                font-size: 2.5rem;
-                font-weight: 900;
+            .logo-letter-b {
+                font-size: 2.8rem; /* Proportionally adjusted for very small screens */
+                transform: translateY(-2px);
+            }
+            
+            .logo-letter-n {
+                font-size: 2.75rem; /* Proportionally INCREASED for very small screens */
+                transform: translateY(0);
             }
             
             .logo-letter-a {
                 font-size: 2.7rem;
-                font-weight: 900;
+                font-weight: 650; /* Slightly thicker but not too thick */
                 margin: 0 2px;
+                /* REMOVED the filter that was making it thicker */
+                filter: none;
             }
             
             .footer-logo {
@@ -629,15 +696,20 @@
                 height: 35px;
             }
             
-            .footer-logo-letter {
-                font-size: 1.9rem;
-                font-weight: 900;
+            .footer-logo-letter-b {
+                font-size: 2.05rem; /* Proportionally adjusted for very small screens */
+            }
+            
+            .footer-logo-letter-n {
+                font-size: 2.0rem; /* Proportionally INCREASED for very small screens */
             }
             
             .footer-logo-letter-a {
                 font-size: 1.9rem;
-                font-weight: 900;
+                font-weight: 650; /* Slightly thicker but not too thick */
                 margin: 0 2px;
+                /* REMOVED the filter that was making it thicker */
+                filter: none;
             }
             
             /* FIXED: Footer contact info for very small screens */
@@ -655,21 +727,13 @@
                 margin-right: 10px;
             }
             
-            /* REQUIRED: Adjust filter for very small screens */
+            /* REMOVED the filter that makes Lambda symbol thicker on mobile */
             .logo-letter-a {
-                filter: 
-                    drop-shadow(0.2px 0.2px 0 currentColor)
-                    drop-shadow(-0.2px -0.2px 0 currentColor)
-                    drop-shadow(0.2px -0.2px 0 currentColor)
-                    drop-shadow(-0.2px 0.2px 0 currentColor);
+                filter: none;
             }
             
             .footer-logo-letter-a {
-                filter: 
-                    drop-shadow(0.18px 0.18px 0 white)
-                    drop-shadow(-0.18px -0.18px 0 white)
-                    drop-shadow(0.18px -0.18px 0 white)
-                    drop-shadow(-0.18px 0.18px 0 white);
+                filter: none;
             }
         }
     </style>
@@ -684,9 +748,9 @@
         <div class="container">
             <div class="logo-container">
                 <div class="logo">
-                    <span class="logo-letter">B</span>
+                    <span class="logo-letter-b">B</span>
                     <span class="logo-letter-a">Λ</span>
-                    <span class="logo-letter">N</span>
+                    <span class="logo-letter-n">N</span>
                 </div>
                 <div class="company-name">
                     <div class="lang-content tr active">
@@ -861,7 +925,7 @@
                             </div>
                         </div>
                         
-                        <div class="contact-item">
+                        <div class="contact-item {
                             <div class="contact-icon">
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
@@ -913,9 +977,9 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <span class="footer-logo-letter">B</span>
+                    <span class="footer-logo-letter-b">B</span>
                     <span class="footer-logo-letter-a">Λ</span>
-                    <span class="footer-logo-letter">N</span>
+                    <span class="footer-logo-letter-n">N</span>
                 </div>
                 <div class="company-name" style="color: white; font-size: 1rem;">
                     <div class="lang-content tr active">
