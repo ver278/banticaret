@@ -1046,258 +1046,266 @@
     </footer>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const langButtons = document.querySelectorAll('.lang-btn');
-        const turkishElements = document.querySelectorAll('.tr');
-        const englishElements = document.querySelectorAll('.en');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const header = document.querySelector('header');
-        const navUl = document.querySelector('nav ul');
-        
-        // Store the original full menu HTML
-        const originalNavHTML = navUl.innerHTML;
-        let isMenuCollapsed = false;
-        let activeSection = '';
-        let isTransitioning = false; // Add a flag to prevent rapid toggling
-        let lastScrollTop = 0; // Track last scroll position
-        
-        setLanguage('tr');
-        
-        langButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const lang = this.getAttribute('data-lang');
-                
-                langButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                setLanguage(lang);
-                // Update menu after language change
-                updateMenuOnScroll();
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const turkishElements = document.querySelectorAll('.tr');
+    const englishElements = document.querySelectorAll('.en');
+    const navUl = document.querySelector('nav ul');
+    const heroSection = document.querySelector('#home');
+    
+    // Store the current language and menu state
+    let currentLang = 'tr';
+    let isMenuCollapsed = false;
+    let activeSection = 'home';
+    
+    // Set initial language
+    setLanguage('tr');
+    
+    // Language switching
+    langButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            
+            langButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            setLanguage(lang);
+            updateMenuForLanguage(lang);
+        });
+    });
+    
+    function setLanguage(lang) {
+        // Hide all language-specific content
+        document.querySelectorAll('.lang-content').forEach(el => {
+            el.classList.remove('active');
         });
         
-        function setLanguage(lang) {
-            document.querySelectorAll('.lang-content').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            if (lang === 'tr') {
-                turkishElements.forEach(el => el.classList.add('active'));
-            } else {
-                englishElements.forEach(el => el.classList.add('active'));
+        // Show only the active language content
+        if (lang === 'tr') {
+            turkishElements.forEach(el => el.classList.add('active'));
+        } else {
+            englishElements.forEach(el => el.classList.add('active'));
+        }
+        
+        currentLang = lang;
+    }
+    
+    // Function to create full menu for a language
+    function createFullMenu(lang) {
+        if (lang === 'tr') {
+            return `
+                <li>
+                    <a href="#home" class="nav-link ${activeSection === 'home' ? 'active' : ''}" data-section="home">Ana Sayfa</a>
+                </li>
+                <li>
+                    <a href="#services" class="nav-link ${activeSection === 'services' ? 'active' : ''}" data-section="services">Hizmetlerimiz</a>
+                </li>
+                <li>
+                    <a href="#why-us" class="nav-link ${activeSection === 'why-us' ? 'active' : ''}" data-section="why-us">Neden BAN?</a>
+                </li>
+                <li>
+                    <a href="#contact" class="nav-link ${activeSection === 'contact' ? 'active' : ''}" data-section="contact">İletişim</a>
+                </li>
+            `;
+        } else {
+            return `
+                <li>
+                    <a href="#home" class="nav-link ${activeSection === 'home' ? 'active' : ''}" data-section="home">Home</a>
+                </li>
+                <li>
+                    <a href="#services" class="nav-link ${activeSection === 'services' ? 'active' : ''}" data-section="services">Our Services</a>
+                </li>
+                <li>
+                    <a href="#why-us" class="nav-link ${activeSection === 'why-us' ? 'active' : ''}" data-section="why-us">Why BAN?</a>
+                </li>
+                <li>
+                    <a href="#contact" class="nav-link ${activeSection === 'contact' ? 'active' : ''}" data-section="contact">Contact</a>
+                </li>
+            `;
+        }
+    }
+    
+    // Function to create collapsed menu for a language
+    function createCollapsedMenu(lang, section) {
+        let sectionText = '';
+        
+        if (lang === 'tr') {
+            switch(section) {
+                case 'home': sectionText = 'Ana Sayfa'; break;
+                case 'services': sectionText = 'Hizmetlerimiz'; break;
+                case 'why-us': sectionText = 'Neden BAN?'; break;
+                case 'contact': sectionText = 'İletişim'; break;
+            }
+        } else {
+            switch(section) {
+                case 'home': sectionText = 'Home'; break;
+                case 'services': sectionText = 'Our Services'; break;
+                case 'why-us': sectionText = 'Why BAN?'; break;
+                case 'contact': sectionText = 'Contact'; break;
             }
         }
         
-        // Function to attach click events to nav links
-        function attachNavLinkEvents() {
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    
-                    const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
-                    document.querySelectorAll('.nav-link').forEach(nav => {
-                        if (nav.classList.contains(currentLang)) {
-                            nav.classList.remove('active');
-                        }
+        return `
+            <li>
+                <a href="#${section}" class="nav-link active" data-section="${section}">${sectionText}</a>
+            </li>
+        `;
+    }
+    
+    // Update menu for specific language
+    function updateMenuForLanguage(lang) {
+        if (isMenuCollapsed) {
+            // Show collapsed menu for current active section
+            navUl.innerHTML = createCollapsedMenu(lang, activeSection);
+        } else {
+            // Show full menu
+            navUl.innerHTML = createFullMenu(lang);
+        }
+        
+        // Reattach click events
+        attachNavLinkEvents();
+    }
+    
+    // Attach click events to nav links
+    function attachNavLinkEvents() {
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetSectionId = targetId.substring(1);
+                const targetSection = document.querySelector(targetId);
+                
+                // Update active section
+                activeSection = targetSectionId;
+                
+                // If menu is collapsed, expand it
+                if (isMenuCollapsed) {
+                    isMenuCollapsed = false;
+                    updateMenuForLanguage(currentLang);
+                } else {
+                    // Update active class in full menu
+                    document.querySelectorAll('.nav-link').forEach(navLink => {
+                        navLink.classList.remove('active');
                     });
                     this.classList.add('active');
-                    
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
+                }
+                
+                // Scroll to section
+                window.scrollTo({
+                    top: targetSection.offsetTop - 100,
+                    behavior: 'smooth'
                 });
             });
+        });
+    }
+    
+    // Detect which section is in view - FIXED VERSION
+    function detectActiveSection() {
+        const sections = document.querySelectorAll('section');
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        
+        // Special case for home/hero section - check if we're in the top 50% of the page
+        if (scrollPosition < windowHeight * 0.5) {
+            return 'home';
         }
         
-        // Initialize nav link events
-        attachNavLinkEvents();
+        let currentSection = 'home';
+        let closestDistance = Infinity;
         
-        function updateMenuOnScroll() {
-            if (isTransitioning) return; // Prevent rapid updates
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
             
-            const sections = document.querySelectorAll('section');
-            const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
-            const currentScrollTop = window.scrollY;
-            
-            // Detect scroll direction
-            const scrollDirection = currentScrollTop > lastScrollTop ? 'down' : 'up';
-            lastScrollTop = currentScrollTop;
-            
-            // Get viewport width to check if mobile
-            const isMobile = window.innerWidth <= 768;
-            
-            // Adjust thresholds for mobile vs desktop
-            const fullMenuThreshold = isMobile ? 150 : 100; // More room on mobile
-            const collapseBufferZone = isMobile ? 200 : 150; // Larger buffer on mobile
-            const homeSectionMultiplier = isMobile ? 0.8 : 0.7; // More sticky on mobile
-            
-            // Check if we're at the top of the page - show full menu
-            if (currentScrollTop < fullMenuThreshold) {
-                // Only update if we're not already showing full menu
-                if (isMenuCollapsed) {
-                    isTransitioning = true; // Set flag to prevent rapid updates
-                    navUl.innerHTML = originalNavHTML;
-                    isMenuCollapsed = false;
-                    
-                    // Reattach click events to new nav links
-                    attachNavLinkEvents();
-                    
-                    // Set active link for home
-                    document.querySelectorAll('.nav-link').forEach(link => {
-                        if (link.getAttribute('href') === '#home' && link.classList.contains(currentLang)) {
-                            link.classList.add('active');
-                        }
-                    });
-                    
-                    // Reset flag after a short delay
-                    setTimeout(() => {
-                        isTransitioning = false;
-                    }, 100);
-                }
-                // Reset activeSection when at top to force menu to collapse when scrolling down
-                activeSection = '';
+            // Check if section top is within viewport (with offset for header)
+            if (scrollPosition + 150 >= sectionTop && scrollPosition + 150 < sectionTop + sectionHeight) {
+                currentSection = section.id;
                 return;
             }
             
-            // Find current section with improved detection
-            let current = '';
-            let closestSection = '';
-            let smallestDistance = Infinity;
-            
-            // First, find which section is most in view
-            sections.forEach(section => {
-                const sectionId = section.getAttribute('id');
-                const sectionTop = section.offsetTop - 150; // Offset for header
-                const sectionBottom = sectionTop + section.offsetHeight;
-                const viewportMiddle = currentScrollTop + window.innerHeight / 2;
-                
-                // Check if the middle of the viewport is within this section
-                if (viewportMiddle >= sectionTop && viewportMiddle <= sectionBottom) {
-                    current = sectionId;
-                }
-                
-                // Also calculate distance from section top to current scroll position
-                // This helps when we're between sections
-                const distance = Math.abs(sectionTop - currentScrollTop);
-                if (distance < smallestDistance) {
-                    smallestDistance = distance;
-                    closestSection = sectionId;
-                }
-            });
-            
-            // If no section found with viewport middle method, use the closest section
-            if (!current) {
-                current = closestSection;
+            // Find the closest section if not inside any
+            const distance = Math.abs(sectionTop - (scrollPosition + 150));
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                currentSection = section.id;
             }
-            
-            // Special handling for home section - make it more sticky
-            // If we're in the upper portion of the page, consider it home section
-            // Use adjusted multiplier for mobile
-            if (currentScrollTop < window.innerHeight * homeSectionMultiplier) {
-                current = 'home';
-            }
-            
-            // Force menu to collapse when scrolling down from top (when not collapsed yet)
-            // But only if we've scrolled past a certain point to avoid flickering at the boundary
-            // Use adjusted buffer zone for mobile
-            if (!isMenuCollapsed && current && currentScrollTop > collapseBufferZone) {
-                // We're not at the top and menu is not collapsed, so collapse it
-                isTransitioning = true; // Set flag to prevent rapid updates
-                activeSection = current;
-                collapseMenuToSection(current, currentLang);
-                
-                // Reset flag after a short delay
-                setTimeout(() => {
-                    isTransitioning = false;
-                }, 100);
-                return;
-            }
-            
-            // Only update if section changed AND we're not transitioning
-            if (current && current !== activeSection && !isTransitioning) {
-                isTransitioning = true; // Set flag to prevent rapid updates
-                activeSection = current;
-                
-                // Collapse menu to show only active section
-                collapseMenuToSection(current, currentLang);
-                
-                // Reset flag after a short delay
-                setTimeout(() => {
-                    isTransitioning = false;
-                }, 100);
-            }
-        }
-        
-        function collapseMenuToSection(sectionId, currentLang) {
-            // Parse the original menu to find the right li element
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = originalNavHTML;
-            const allLis = tempDiv.querySelectorAll('li');
-            
-            // Find the li that contains a link to the current section in the current language
-            let targetLi = null;
-            
-            allLis.forEach(li => {
-                // Get all links in this li
-                const links = li.querySelectorAll('.nav-link');
-                links.forEach(link => {
-                    if (link.getAttribute('href') === `#${sectionId}` && link.classList.contains(currentLang)) {
-                        targetLi = li.cloneNode(true); // Clone the li
-                    }
-                });
-            });
-            
-            if (targetLi) {
-                // Clear the current menu and add only the target li
-                navUl.innerHTML = '';
-                navUl.appendChild(targetLi);
-                isMenuCollapsed = true;
-                
-                // Reattach click event to the new link
-                const newLink = navUl.querySelector('.nav-link');
-                if (newLink) {
-                    newLink.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        
-                        const targetId = this.getAttribute('href');
-                        const targetSection = document.querySelector(targetId);
-                        
-                        const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
-                        document.querySelectorAll('.nav-link').forEach(nav => {
-                            if (nav.classList.contains(currentLang)) {
-                                nav.classList.remove('active');
-                            }
-                        });
-                        this.classList.add('active');
-                        
-                        window.scrollTo({
-                            top: targetSection.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
-                    });
-                    
-                    // Set this link as active
-                    newLink.classList.add('active');
-                }
-            }
-        }
-        
-        // Throttle scroll events for better performance
-        let scrollTimeout;
-        window.addEventListener('scroll', function() {
-            if (scrollTimeout) {
-                clearTimeout(scrollTimeout);
-            }
-            scrollTimeout = setTimeout(updateMenuOnScroll, 50);
         });
         
-        // Initial call to set up menu
-        updateMenuOnScroll();
+        return currentSection;
+    }
+    
+    // Handle scroll events
+    let lastScrollTop = 0;
+    let isAtTop = true;
+    let scrollTimeout;
+    
+    function handleScroll() {
+        const scrollTop = window.scrollY;
+        const isMobile = window.innerWidth <= 768;
+        
+        // Check if at top - more generous threshold for home section
+        isAtTop = scrollTop < 100;
+        
+        // Detect active section
+        const detectedSection = detectActiveSection();
+        if (detectedSection !== activeSection) {
+            activeSection = detectedSection;
+            
+            // If menu is collapsed, update it
+            if (isMenuCollapsed) {
+                navUl.innerHTML = createCollapsedMenu(currentLang, activeSection);
+                attachNavLinkEvents();
+            } else {
+                // Update active link in full menu
+                updateMenuForLanguage(currentLang);
+            }
+        }
+        
+        // Collapse/expand menu based on scroll
+        const scrollDirection = scrollTop > lastScrollTop ? 'down' : 'up';
+        lastScrollTop = scrollTop;
+        
+        // Always show full menu at top (hero section)
+        if (isAtTop) {
+            if (isMenuCollapsed) {
+                isMenuCollapsed = false;
+                updateMenuForLanguage(currentLang);
+            }
+            return;
+        }
+        
+        // Collapse menu when scrolling down past threshold
+        const collapseThreshold = isMobile ? 200 : 150;
+        if (scrollDirection === 'down' && scrollTop > collapseThreshold && !isMenuCollapsed) {
+            isMenuCollapsed = true;
+            navUl.innerHTML = createCollapsedMenu(currentLang, activeSection);
+            attachNavLinkEvents();
+        }
+        // Expand menu when scrolling up near top
+        else if (scrollDirection === 'up' && scrollTop < 100 && isMenuCollapsed) {
+            isMenuCollapsed = false;
+            updateMenuForLanguage(currentLang);
+        }
+    }
+    
+    // Throttle scroll events
+    window.addEventListener('scroll', function() {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        scrollTimeout = setTimeout(handleScroll, 50);
     });
+    
+    // Initialize
+    updateMenuForLanguage(currentLang);
+    handleScroll();
+    
+    // Also update on window resize
+    window.addEventListener('resize', function() {
+        handleScroll();
+    });
+});
     </script>
 </body>
 </html>
