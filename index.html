@@ -1127,8 +1127,16 @@
             const scrollDirection = currentScrollTop > lastScrollTop ? 'down' : 'up';
             lastScrollTop = currentScrollTop;
             
+            // Get viewport width to check if mobile
+            const isMobile = window.innerWidth <= 768;
+            
+            // Adjust thresholds for mobile vs desktop
+            const fullMenuThreshold = isMobile ? 150 : 100; // More room on mobile
+            const collapseBufferZone = isMobile ? 200 : 150; // Larger buffer on mobile
+            const homeSectionMultiplier = isMobile ? 0.8 : 0.7; // More sticky on mobile
+            
             // Check if we're at the top of the page - show full menu
-            if (currentScrollTop < 100) {
+            if (currentScrollTop < fullMenuThreshold) {
                 // Only update if we're not already showing full menu
                 if (isMenuCollapsed) {
                     isTransitioning = true; // Set flag to prevent rapid updates
@@ -1187,14 +1195,16 @@
             }
             
             // Special handling for home section - make it more sticky
-            // If we're in the upper half of the page, consider it home section
-            if (currentScrollTop < window.innerHeight * 0.7) {
+            // If we're in the upper portion of the page, consider it home section
+            // Use adjusted multiplier for mobile
+            if (currentScrollTop < window.innerHeight * homeSectionMultiplier) {
                 current = 'home';
             }
             
             // Force menu to collapse when scrolling down from top (when not collapsed yet)
             // But only if we've scrolled past a certain point to avoid flickering at the boundary
-            if (!isMenuCollapsed && current && currentScrollTop > 150) {
+            // Use adjusted buffer zone for mobile
+            if (!isMenuCollapsed && current && currentScrollTop > collapseBufferZone) {
                 // We're not at the top and menu is not collapsed, so collapse it
                 isTransitioning = true; // Set flag to prevent rapid updates
                 activeSection = current;
