@@ -1046,38 +1046,49 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const langButtons = document.querySelectorAll('.lang-btn');
-            const turkishElements = document.querySelectorAll('.tr');
-            const englishElements = document.querySelectorAll('.en');
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            setLanguage('tr');
-            
-            langButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const lang = this.getAttribute('data-lang');
-                    
-                    langButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    setLanguage(lang);
-                });
+    document.addEventListener('DOMContentLoaded', function() {
+        const langButtons = document.querySelectorAll('.lang-btn');
+        const turkishElements = document.querySelectorAll('.tr');
+        const englishElements = document.querySelectorAll('.en');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const header = document.querySelector('header');
+        const navUl = document.querySelector('nav ul');
+        
+        // Store the original full menu HTML
+        const originalNavHTML = navUl.innerHTML;
+        let isMenuCollapsed = false;
+        let activeSection = '';
+        
+        setLanguage('tr');
+        
+        langButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const lang = this.getAttribute('data-lang');
+                
+                langButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                setLanguage(lang);
+                // Update menu after language change
+                updateMenuOnScroll();
+            });
+        });
+        
+        function setLanguage(lang) {
+            document.querySelectorAll('.lang-content').forEach(el => {
+                el.classList.remove('active');
             });
             
-            function setLanguage(lang) {
-                document.querySelectorAll('.lang-content').forEach(el => {
-                    el.classList.remove('active');
-                });
-                
-                if (lang === 'tr') {
-                    turkishElements.forEach(el => el.classList.add('active'));
-                } else {
-                    englishElements.forEach(el => el.classList.add('active'));
-                }
+            if (lang === 'tr') {
+                turkishElements.forEach(el => el.classList.add('active'));
+            } else {
+                englishElements.forEach(el => el.classList.add('active'));
             }
-            
-            navLinks.forEach(link => {
+        }
+        
+        // Function to attach click events to nav links
+        function attachNavLinkEvents() {
+            document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     
@@ -1085,7 +1096,7 @@
                     const targetSection = document.querySelector(targetId);
                     
                     const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
-                    navLinks.forEach(nav => {
+                    document.querySelectorAll('.nav-link').forEach(nav => {
                         if (nav.classList.contains(currentLang)) {
                             nav.classList.remove('active');
                         }
@@ -1098,33 +1109,157 @@
                     });
                 });
             });
+        }
+        
+        // Initialize nav link events
+        attachNavLinkEvents();
+        
+        function updateMenuOnScroll() {
+            const sections = document.querySelectorAll('section');
+            const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
             
-            window.addEventListener('scroll', function() {
-                const sections = document.querySelectorAll('section');
-                const navLinks = document.querySelectorAll('.nav-link');
-                
-                let current = '';
-                
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
+            // Check if we're at the top of the page - show full menu
+            if (window.scrollY < 100) {
+                // Show full menu
+                if (isMenuCollapsed) {
+                    navUl.innerHTML = originalNavHTML;
+                    isMenuCollapsed = false;
                     
-                    if (scrollY >= (sectionTop - 150)) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${current}`) {
-                        const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
-                        if (link.classList.contains(currentLang)) {
+                    // Reattach click events to new nav links
+                    attachNavLinkEvents();
+                    
+                    // Set active link for home
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        if (link.getAttribute('href') === '#home' && link.classList.contains(currentLang)) {
                             link.classList.add('active');
                         }
+                    });
+                }
+                // Reset activeSection when at top to force menu to collapse when scrolling down
+                activeSection = '';
+                return;
+            }
+            
+            // Find current section with improved detection
+            let current = '';
+            let closestSection = '';
+            let smallestDistance = Infinity;
+            
+            // First, find which section is most in view
+            sections.forEach(section => {
+                const sectionId = section.getAttribute('id');
+                const sectionTop = section.offsetTop - 150; // Offset for header
+                const sectionBottom = sectionTop + section.offsetHeight;
+                const viewportMiddle = window.scrollY + window.innerHeight / 2;
+                
+                // Check if the middle of the viewport is within this section
+                if (viewportMiddle >= sectionTop && viewportMiddle <= sectionBottom) {
+                    current = sectionId;
+                }
+                
+                // Also calculate distance from section top to current scroll position
+                // This helps when we're between sections
+                const distance = Math.abs(sectionTop - window.scrollY);
+                if (distance < smallestDistance) {
+                    smallestDistance = distance;
+                    closestSection = sectionId;
+                }
+            });
+            
+            // If no section found with viewport middle method, use the closest section
+            if (!current) {
+                current = closestSection;
+            }
+            
+            // Special handling for home section - make it more sticky
+            // If we're in the upper half of the page, consider it home section
+            if (window.scrollY < window.innerHeight * 0.7) {
+                current = 'home';
+            }
+            
+            // Force menu to collapse when scrolling down from top (when not collapsed yet)
+            if (!isMenuCollapsed && current) {
+                // We're not at the top and menu is not collapsed, so collapse it
+                activeSection = current;
+                collapseMenuToSection(current, currentLang);
+                return;
+            }
+            
+            // Only update if section changed
+            if (current && current !== activeSection) {
+                activeSection = current;
+                
+                // Collapse menu to show only active section
+                collapseMenuToSection(current, currentLang);
+            }
+        }
+        
+        function collapseMenuToSection(sectionId, currentLang) {
+            // Parse the original menu to find the right li element
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = originalNavHTML;
+            const allLis = tempDiv.querySelectorAll('li');
+            
+            // Find the li that contains a link to the current section in the current language
+            let targetLi = null;
+            
+            allLis.forEach(li => {
+                // Get all links in this li
+                const links = li.querySelectorAll('.nav-link');
+                links.forEach(link => {
+                    if (link.getAttribute('href') === `#${sectionId}` && link.classList.contains(currentLang)) {
+                        targetLi = li.cloneNode(true); // Clone the li
                     }
                 });
             });
+            
+            if (targetLi) {
+                // Clear the current menu and add only the target li
+                navUl.innerHTML = '';
+                navUl.appendChild(targetLi);
+                isMenuCollapsed = true;
+                
+                // Reattach click event to the new link
+                const newLink = navUl.querySelector('.nav-link');
+                if (newLink) {
+                    newLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        const targetSection = document.querySelector(targetId);
+                        
+                        const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
+                        document.querySelectorAll('.nav-link').forEach(nav => {
+                            if (nav.classList.contains(currentLang)) {
+                                nav.classList.remove('active');
+                            }
+                        });
+                        this.classList.add('active');
+                        
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    });
+                    
+                    // Set this link as active
+                    newLink.classList.add('active');
+                }
+            }
+        }
+        
+        // Throttle scroll events for better performance
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(updateMenuOnScroll, 50);
         });
+        
+        // Initial call to set up menu
+        updateMenuOnScroll();
+    });
     </script>
 </body>
 </html>
