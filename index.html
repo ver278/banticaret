@@ -1058,6 +1058,8 @@
         const originalNavHTML = navUl.innerHTML;
         let isMenuCollapsed = false;
         let activeSection = '';
+        let isTransitioning = false; // Add a flag to prevent rapid toggling
+        let lastScrollTop = 0; // Track last scroll position
         
         setLanguage('tr');
         
@@ -1115,13 +1117,21 @@
         attachNavLinkEvents();
         
         function updateMenuOnScroll() {
+            if (isTransitioning) return; // Prevent rapid updates
+            
             const sections = document.querySelectorAll('section');
             const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
+            const currentScrollTop = window.scrollY;
+            
+            // Detect scroll direction
+            const scrollDirection = currentScrollTop > lastScrollTop ? 'down' : 'up';
+            lastScrollTop = currentScrollTop;
             
             // Check if we're at the top of the page - show full menu
-            if (window.scrollY < 100) {
-                // Show full menu
+            if (currentScrollTop < 100) {
+                // Only update if we're not already showing full menu
                 if (isMenuCollapsed) {
+                    isTransitioning = true; // Set flag to prevent rapid updates
                     navUl.innerHTML = originalNavHTML;
                     isMenuCollapsed = false;
                     
@@ -1134,6 +1144,11 @@
                             link.classList.add('active');
                         }
                     });
+                    
+                    // Reset flag after a short delay
+                    setTimeout(() => {
+                        isTransitioning = false;
+                    }, 100);
                 }
                 // Reset activeSection when at top to force menu to collapse when scrolling down
                 activeSection = '';
@@ -1150,7 +1165,7 @@
                 const sectionId = section.getAttribute('id');
                 const sectionTop = section.offsetTop - 150; // Offset for header
                 const sectionBottom = sectionTop + section.offsetHeight;
-                const viewportMiddle = window.scrollY + window.innerHeight / 2;
+                const viewportMiddle = currentScrollTop + window.innerHeight / 2;
                 
                 // Check if the middle of the viewport is within this section
                 if (viewportMiddle >= sectionTop && viewportMiddle <= sectionBottom) {
@@ -1159,7 +1174,7 @@
                 
                 // Also calculate distance from section top to current scroll position
                 // This helps when we're between sections
-                const distance = Math.abs(sectionTop - window.scrollY);
+                const distance = Math.abs(sectionTop - currentScrollTop);
                 if (distance < smallestDistance) {
                     smallestDistance = distance;
                     closestSection = sectionId;
@@ -1173,24 +1188,37 @@
             
             // Special handling for home section - make it more sticky
             // If we're in the upper half of the page, consider it home section
-            if (window.scrollY < window.innerHeight * 0.7) {
+            if (currentScrollTop < window.innerHeight * 0.7) {
                 current = 'home';
             }
             
             // Force menu to collapse when scrolling down from top (when not collapsed yet)
-            if (!isMenuCollapsed && current) {
+            // But only if we've scrolled past a certain point to avoid flickering at the boundary
+            if (!isMenuCollapsed && current && currentScrollTop > 150) {
                 // We're not at the top and menu is not collapsed, so collapse it
+                isTransitioning = true; // Set flag to prevent rapid updates
                 activeSection = current;
                 collapseMenuToSection(current, currentLang);
+                
+                // Reset flag after a short delay
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 100);
                 return;
             }
             
-            // Only update if section changed
-            if (current && current !== activeSection) {
+            // Only update if section changed AND we're not transitioning
+            if (current && current !== activeSection && !isTransitioning) {
+                isTransitioning = true; // Set flag to prevent rapid updates
                 activeSection = current;
                 
                 // Collapse menu to show only active section
                 collapseMenuToSection(current, currentLang);
+                
+                // Reset flag after a short delay
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 100);
             }
         }
         
